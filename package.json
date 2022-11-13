@@ -1,0 +1,21 @@
+{
+  "name": "@uppy/azure-blob",
+  "description": "Upload to Azure Blob with Uppy",
+  "version": "1.0.0",
+  "license": "MIT",
+  "type": "module",
+  "types": "types/index.d.ts",
+  "main": "src/index.js",
+  "keywords": [
+    "file uploader",
+    "azure blob",
+    "uppy",
+    "uppy-plugin"
+  ],
+  "author": "Brecht Vermeersch",
+  "dependencies": {
+    "@azure/abort-controller": "^1.1.0",
+    "@azure/storage-blob": "^12.12.0",
+    "@uppy/core": "^3.0.4"
+  }
+}
