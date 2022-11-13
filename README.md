@@ -1,6 +1,6 @@
 # Uppy Azure Blob
 
-![npm](https://img.shields.io/npm/v/uppy-azure-blob)
+<a href="https://www.npmjs.com/package/uppy-azure-blob"><img src="https://img.shields.io/npm/v/uppy-azure-blob.svg?style=flat-square"></a>
 
 <img src="https://uppy.io/images/logos/uppy-dog-head-arrow.svg" width="120" alt="Uppy logo: a superman puppy in a pink suit" align="right">
 
