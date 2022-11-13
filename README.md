@@ -1,4 +1,4 @@
-# @uppy/azure-blob
+# Uppy Azure Blob
 
 <img src="https://uppy.io/images/logos/uppy-dog-head-arrow.svg" width="120" alt="Uppy logo: a superman puppy in a pink suit" align="right">
 
@@ -52,7 +52,7 @@ new Uppy({
 ## Installation
 
 ```bash
-$ npm install @uppy/azure-blob
+$ npm install uppy-azure-blob
 ```
 
 ## License
