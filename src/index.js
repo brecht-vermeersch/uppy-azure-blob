@@ -25,15 +25,18 @@ export default class AzureBlob extends BasePlugin {
             .getContainerClient(opts.container);
         this.#abortControllers = new Map();
 
-        this.#blobHTTPHeaders = opts.blobHTTPHeaders;
-        this.#blockSize = opts.blockSize;
-        this.#conditions = opts.conditions;
-        this.#concurrency = opts.concurrency;
-        this.#encryptionScope = opts.encryptionScope;
-        this.#maxSingleShotSize = opts.maxSingleShotSize;
-        this.#metadata = opts.metadata;
-        this.#tags = opts.tags;
-        this.#tier = opts.tier;
+        const defaultOpts = opts.defaultOptions;
+
+        this.#blobHTTPHeaders = defaultOpts?.blobHTTPHeaders;
+        this.#blockSize = defaultOpts?.blockSize;
+        this.#conditions = defaultOpts?.conditions;
+        this.#concurrency = defaultOpts?.concurrency;
+        this.#encryptionScope = defaultOpts?.encryptionScope;
+        this.#maxSingleShotSize = defaultOpts?.maxSingleShotSize;
+        this.#metadata = defaultOpts?.metadata;
+        this.#tags = defaultOpts?.tags;
+        this.#tier = defaultOpts?.tier;
+
         this.#uploadHandler = this.uploadFiles.bind(this);
     }
 
@@ -73,23 +76,25 @@ export default class AzureBlob extends BasePlugin {
         const abortController = new AbortController();
         this.#abortControllers.set(file.id, abortController);
 
+        const opts = file.options;
+
         return this.#containerClient
             .getBlockBlobClient(file.name)
             .uploadData(file.data, {
                 abortSignal: abortController.signal,
-                blobHTTPHeaders: file?.blobHTTPHeaders ?? this.#blobHTTPHeaders,
-                blockSize: file?.blockSize ?? this.#blockSize,
-                concurrency: file?.concurrency ?? this.#concurrency,
-                conditions: file?.conditions ?? this.#conditions,
-                encryptionScope: file?.encryptionScope ?? this.#encryptionScope,
-                maxSingleShotSize: file?.maxSingleShotSize ?? this.#maxSingleShotSize,
-                metadata: file?.metadata ?? this.#metadata,
+                blobHTTPHeaders: opts?.blobHTTPHeaders ?? this.#blobHTTPHeaders,
+                blockSize: opts?.blockSize ?? this.#blockSize,
+                concurrency: opts?.concurrency ?? this.#concurrency,
+                conditions: opts?.conditions ?? this.#conditions,
+                encryptionScope: opts?.encryptionScope ?? this.#encryptionScope,
+                maxSingleShotSize: opts?.maxSingleShotSize ?? this.#maxSingleShotSize,
+                metadata: opts?.metadata ?? this.#metadata,
                 onProgress: progress => onProgress({
                     bytesUploaded: progress.loadedBytes,
                     bytesTotal: file.size
                 }),
-                tags: file?.tags ?? this.#tags,
-                tier: file?.tier ?? this.#tier,
+                tags: opts?.tags ?? this.#tags,
+                tier: opts?.tier ?? this.#tier,
             });
     }
 
