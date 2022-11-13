@@ -15,6 +15,7 @@ export default class AzureBlob extends BasePlugin {
     #tags;
     #tier;
     #uploadHandler;
+    #fileRemovedHandler;
 
     constructor(uppy, opts) {
         super(uppy, opts);
@@ -38,6 +39,7 @@ export default class AzureBlob extends BasePlugin {
         this.#tier = defaultOpts?.tier;
 
         this.#uploadHandler = this.uploadFiles.bind(this);
+        this.#fileRemovedHandler = this.#stopUpload.bind(this);
     }
 
     install() {
@@ -49,7 +51,7 @@ export default class AzureBlob extends BasePlugin {
     }
 
     async uploadFiles(fileIDs) {
-        this.uppy.on('file-removed', this.#stopUpload);
+        this.uppy.on('file-removed', this.#fileRemovedHandler);
 
         for (const fileID of fileIDs) {
             const file = this.uppy.getFile(fileID);
@@ -69,7 +71,7 @@ export default class AzureBlob extends BasePlugin {
             }
         }
 
-        this.uppy.off('file-removed', this.#stopUpload);
+        this.uppy.off('file-removed', this.#fileRemovedHandler);
     }
 
     async #startUpload(file, onProgress) {
