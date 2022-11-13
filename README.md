@@ -19,7 +19,7 @@ uppy.use(AzureBlob, {
     container: 'uppy',
     sas: '?sv=2021-08-06&ss=...',
     defaultOptions: {
-        // @see <pre><a href="https://learn.microsoft.com/en-us/javascript/api/@azure/storage-blob/blockblobparalleluploadoptions">official docs</a></pre>
+        // @see https://learn.microsoft.com/en-us/javascript/api/@azure/storage-blob/blockblobparalleluploadoptions
         // blobHTTPHeaders: ...,
         // blockSize: ...,
         // conditions: ...,
