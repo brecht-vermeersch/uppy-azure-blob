@@ -1,5 +1,5 @@
 {
-  "name": "@uppy/azure-blob",
+  "name": "uppy-azure-blob",
   "description": "Upload to Azure Blob with Uppy",
   "version": "1.0.0",
   "license": "MIT",
