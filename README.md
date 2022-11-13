@@ -1,5 +1,7 @@
 # Uppy Azure Blob
 
+![npm](https://img.shields.io/npm/v/uppy-azure-blob)
+
 <img src="https://uppy.io/images/logos/uppy-dog-head-arrow.svg" width="120" alt="Uppy logo: a superman puppy in a pink suit" align="right">
 
 The AzureBlob plugin can be used to upload files directly to an Azure Blob Container.
