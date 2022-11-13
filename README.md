@@ -11,10 +11,10 @@ This is an unofficial Uppy plugin.
 ## Example
 
 ```js
-import Uppy from '@uppy/core'
-import AzureBlob from '@uppy/azure-blob'
+import Uppy from '@uppy/core';
+import AzureBlob from 'uppy-azure-blob';
 
-const uppy = new Uppy()
+const uppy = new Uppy();
 
 uppy.use(AzureBlob, {
     endpoint: 'myaccount.blob.core.windows.net',
@@ -34,7 +34,7 @@ uppy.use(AzureBlob, {
         // tags: ...,
         // tier: ...,
     }
-})
+});
 ```
 
 ```js
@@ -45,10 +45,10 @@ new Uppy({
             metadata: {
                 uploader: 'Bar'
             }
-        }
+        };
         return currentFile;
     }
-})
+});
 ```
 
 ## Installation
