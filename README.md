@@ -55,6 +55,24 @@ new Uppy({
 $ npm install uppy-azure-blob
 ```
 
+## Azure Blob configuration
+
+### CORS
+
+Azure Blob Containers do not allow public uploads for security reasons. To allow Uppy and the browser to upload directly to a container, its CORS permissions need to be configured.
+
+For example, you can create following CORS settings for debugging. But please customize the settings carefully according to your requirements in production environment.
+
+* Allowed origins: *
+* Allowed verbs: PUT
+* Allowed headers: *
+* Exposed headers: *
+* Maximum age (seconds): 86400
+
+### Shared Access Signatures (SAS)
+
+To upload a file in chunks, the sas token needs the **write** permission.
+
 ## License
 
 [The MIT License](./LICENSE).
