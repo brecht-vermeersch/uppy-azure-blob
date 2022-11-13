@@ -4,7 +4,7 @@
 
 The AzureBlob plugin can be used to upload files directly to an Azure Blob Container.
 
-This is an unofficial uppy plugin. 
+This is an unofficial Uppy plugin. 
 
 ## Example
 
