@@ -1,6 +1,6 @@
 import BasePlugin from "@uppy/core/lib/BasePlugin";
 import { BlobServiceClient } from "@azure/storage-blob";
-import { AbortController } from "@azure/abort-controller";
+import { AbortController, AbortError } from "@azure/abort-controller";
 
 export default class AzureBlob extends BasePlugin {
   #abortControllers;
@@ -16,9 +16,10 @@ export default class AzureBlob extends BasePlugin {
 
     this.#abortControllers = new Map();
 
-    this.#containerClient = new BlobServiceClient(
-      opts.endpoint + opts.sas
-    ).getContainerClient(opts.container);
+    const blobServiceClient = new BlobServiceClient(opts.endpoint + opts.sas);
+    this.#containerClient = blobServiceClient.getContainerClient(
+      opts.container
+    );
 
     this.#defaultBlobOptions = opts.defaultBlobOptions;
 
@@ -62,15 +63,21 @@ export default class AzureBlob extends BasePlugin {
     const abortController = new AbortController();
     this.#abortControllers.set(file.id, abortController);
 
-    return this.#containerClient
-      .getBlockBlobClient(file.name)
-      .uploadData(file.data, {
+    const blockBlobClient = this.#containerClient.getBlockBlobClient(file.name);
+
+    try {
+      return await blockBlobClient.uploadData(file.data, {
         ...this.#defaultBlobOptions,
         ...file.blobOptions,
         abortSignal: abortController.signal,
         onProgress: (progress) =>
           onProgress(this.#azureProgressToUppyProgress(progress, file)),
       });
+    } catch (error) {
+      if (!error instanceof AbortError) {
+        throw error;
+      }
+    }
   }
 
   #azureProgressToUppyProgress(azureProgress, file) {
