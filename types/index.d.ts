@@ -5,7 +5,7 @@ export interface AzureBlobOptions extends PluginOptions {
     endpoint: string,
     container: string,
     sas: string,
-    defaultOptions?: BlockBlobParallelUploadOptions
+    defaultBlobOptions?: BlockBlobParallelUploadOptions
 }
 
 declare class AzureBlob extends BasePlugin<AzureBlobOptions> {}

@@ -5,15 +5,17 @@ import {AbortController} from "@azure/abort-controller";
 export default class AzureBlob extends BasePlugin {
     #containerClient;
     #abortControllers;
-    #blobHTTPHeaders;
-    #blockSize;
-    #conditions;
-    #concurrency;
-    #encryptionScope;
-    #maxSingleShotSize;
-    #metadata;
-    #tags;
-    #tier;
+
+    #defaultBlobHTTPHeaders;
+    #defaultBlockSize;
+    #defaultConditions;
+    #defaultConcurrency;
+    #defaultEncryptionScope;
+    #defaultMaxSingleShotSize;
+    #defaultMetadata;
+    #defaultTags;
+    #defaultTier;
+
     #uploadHandler;
     #fileRemovedHandler;
 
@@ -26,17 +28,15 @@ export default class AzureBlob extends BasePlugin {
             .getContainerClient(opts.container);
         this.#abortControllers = new Map();
 
-        const defaultOpts = opts.defaultOptions;
-
-        this.#blobHTTPHeaders = defaultOpts?.blobHTTPHeaders;
-        this.#blockSize = defaultOpts?.blockSize;
-        this.#conditions = defaultOpts?.conditions;
-        this.#concurrency = defaultOpts?.concurrency;
-        this.#encryptionScope = defaultOpts?.encryptionScope;
-        this.#maxSingleShotSize = defaultOpts?.maxSingleShotSize;
-        this.#metadata = defaultOpts?.metadata;
-        this.#tags = defaultOpts?.tags;
-        this.#tier = defaultOpts?.tier;
+        this.#defaultBlobHTTPHeaders = opts.defaultBlobOptions?.blobHTTPHeaders;
+        this.#defaultBlockSize = opts.defaultBlobOptions?.blockSize;
+        this.#defaultConditions = opts.defaultBlobOptions?.conditions;
+        this.#defaultConcurrency = opts.defaultBlobOptions?.concurrency;
+        this.#defaultEncryptionScope = opts.defaultBlobOptions?.encryptionScope;
+        this.#defaultMaxSingleShotSize = opts.defaultBlobOptions?.maxSingleShotSize;
+        this.#defaultMetadata = opts.defaultBlobOptions?.metadata;
+        this.#defaultTags = opts.defaultBlobOptions?.tags;
+        this.#defaultTier = opts.defaultBlobOptions?.tier;
 
         this.#uploadHandler = this.uploadFiles.bind(this);
         this.#fileRemovedHandler = this.#stopUpload.bind(this);
@@ -78,25 +78,23 @@ export default class AzureBlob extends BasePlugin {
         const abortController = new AbortController();
         this.#abortControllers.set(file.id, abortController);
 
-        const opts = file.options;
-
         return this.#containerClient
             .getBlockBlobClient(file.name)
             .uploadData(file.data, {
                 abortSignal: abortController.signal,
-                blobHTTPHeaders: opts?.blobHTTPHeaders ?? this.#blobHTTPHeaders,
-                blockSize: opts?.blockSize ?? this.#blockSize,
-                concurrency: opts?.concurrency ?? this.#concurrency,
-                conditions: opts?.conditions ?? this.#conditions,
-                encryptionScope: opts?.encryptionScope ?? this.#encryptionScope,
-                maxSingleShotSize: opts?.maxSingleShotSize ?? this.#maxSingleShotSize,
-                metadata: opts?.metadata ?? this.#metadata,
+                blobHTTPHeaders: file.blobOptions?.blobHTTPHeaders ?? this.#defaultBlobHTTPHeaders,
+                blockSize: file.blobOptions?.blockSize ?? this.#defaultBlockSize,
+                concurrency: file.blobOptions?.concurrency ?? this.#defaultConcurrency,
+                conditions: file.blobOptions?.conditions ?? this.#defaultConditions,
+                encryptionScope: file.blobOptions?.encryptionScope ?? this.#defaultEncryptionScope,
+                maxSingleShotSize: file.blobOptions?.maxSingleShotSize ?? this.#defaultMaxSingleShotSize,
+                metadata: file.blobOptions?.metadata ?? this.#defaultMetadata,
                 onProgress: progress => onProgress({
                     bytesUploaded: progress.loadedBytes,
                     bytesTotal: file.size
                 }),
-                tags: opts?.tags ?? this.#tags,
-                tier: opts?.tier ?? this.#tier,
+                tags: file.blobOptions?.tags ?? this.#defaultTags,
+                tier: file.blobOptions?.tier ?? this.#defaultTier,
             });
     }
 

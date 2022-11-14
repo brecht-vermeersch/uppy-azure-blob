@@ -20,7 +20,7 @@ uppy.use(AzureBlob, {
     endpoint: 'myaccount.blob.core.windows.net',
     container: 'uppy',
     sas: '?sv=2021-08-06&ss=...',
-    defaultOptions: {
+    defaultBlobOptions: {
         // @see https://learn.microsoft.com/en-us/javascript/api/@azure/storage-blob/blockblobparalleluploadoptions
         // blobHTTPHeaders: ...,
         // blockSize: ...,
@@ -41,7 +41,7 @@ uppy.use(AzureBlob, {
 new Uppy({
     onBeforeFileAdded: (currentFile) => {
         // You can overwrite the default options
-        currentFile.options = {
+        currentFile.blobOptions = {
             metadata: {
                 uploader: 'Bar'
             }
