@@ -20,5 +20,12 @@
   },
   "devDependencies": {
     "prettier": "^2.7.1"
+  },
+  "bugs": {
+    "url": "https://github.com/brecht-vermeersch/uppy-azure-blob/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brecht-vermeersch/uppy-azure-blob"
   }
 }
